@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  backend:
+    build: .
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    volumes:
+      - .:/app
+    networks:
+      - appnet
+
+  mysql:
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: tu_contraseña
+      MYSQL_DATABASE: inventario
+    ports:
+      - "3306:3306"
+    networks:
+      - appnet
+
+networks:
+  appnet:
+    driver: bridge
