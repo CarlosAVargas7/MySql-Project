@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="with=device-width, initial-scale=1.0">
+    <title>Sistema de Inventario</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <h2>Agregar Producto</h2>
+    <form id="ProductoForm">
+        <input type="text" id="nombre" placeholder="Nombre" required>
+        <input type="number" id="precio" placeholder="Precio" step="0.01" required>
+        <input type="number" id="stock" placeholder="Stock" required>
+        <button type="submit">Agregar</button>
+    </form>
+
+    <h2>Actualizar Producto</h2>
+    <form id="actualizarProductoForm">
+        <input type="number" id="idActualizar" placeholder="ID del producto" required>
+        <input type="text" id="nombreActualizar" placeholder="Nombre" required>
+        <input type="number" id="precioActualizar" placeholder="Precio" step="0.01" required>
+        <input type="number" id="stockActualizar" placeholder="Stock" required>
+        <button type="submit">Actualizar</button>
+    </form>
+
+    <h2>Registrar Pedido</h2>
+    <form id="pedidoForm">
+        <input type="number" id="producto_id" placeholder="ID del producto" required>
+        <input type="number" id="cantidad" placeholder="Cantidad" required>
+        <button type="submit">Registrar</button>
+    </form>
+
+    <h2>Productos</h2>
+    <table id="productosTable">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Stock</th>
+            <th>Acciones</th>
+        </tr>
+    </table>
+
+    <h2>Productos con Bajo Stock</h2>
+    <table id="bajoStockTable">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Stock</th>
+        </tr>
+    </table>
+
+    <h2>Pedidos</h2>
+    <table id="pedidosTable">
+        <tr>
+            <th>ID</th>
+            <th>Producto ID</th>
+            <th>Cantidad</th>
+            <th>Fecha</th>
+        </tr>
+    </table>
+
+    <script src="script.js"></script>
+</body>
+</html>
