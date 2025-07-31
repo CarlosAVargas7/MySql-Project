@@ -3,10 +3,19 @@
 import express, { Request, Response } from 'express';
 // Importamos mysql2/promise para conectarnos a MySQL usando promesas (async/await)
 import mysql from 'mysql2/promise';
+// Importamos cors para permitir peticiones desde otros dominios
+import cors from 'cors';
 
 // ========== CONFIGURACIÓN DE EXPRESS ==========
 // Creamos una instancia de la aplicación Express
 const app = express();
+
+// ========== CONFIGURACIÓN DE CORS ==========
+// CORS permite que el frontend (puerto 5173) se comunique con el backend (puerto 3000)
+app.use(cors({
+  origin: 'http://localhost:5173',  // Permitir peticiones desde Vite
+  credentials: true                 // Permitir cookies y headers de autenticación
+}));
 
 // Middleware para parsear JSON automáticamente
 // Esto permite que Express entienda el JSON que llega en las peticiones HTTP
@@ -202,5 +211,6 @@ app.get('/pedidos', async (req: Request, res: Response) => {
 // ========== INICIAR EL SERVIDOR ==========
 // Ponemos el servidor a escuchar en el puerto 3000
 app.listen(3000, () => {
-  console.log('Servidor corriendo en http://localhost:3000');
+  console.log('🚀 Servidor backend corriendo en http://localhost:3000');
+  console.log('📡 CORS configurado para frontend en http://localhost:5173');
 });
