@@ -1,16 +1,14 @@
 {
   "compilerOptions": {
-    "target": "ES6",
+    "target": "ES2020",
     "module": "commonjs",
-    "outDir": "./dist",
-    "rootDir": ".",
-    "strict": true,
+    "moduleResolution": "node",
     "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "strict": true,
     "skipLibCheck": true
   },
-  "include": [
-    "src/**/*",
-    "backend/**/*"
-  ],
-  "exclude": ["node_modules"]
+  "ts-node": {
+    "esm": false
+  }
 }
