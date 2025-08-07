@@ -345,3 +345,163 @@ MANEJO DE ERRORES:
 // Hacer que la función eliminarProducto esté disponible globalmente
 // Esto es necesario porque la llamamos desde onclick en el HTML
 (window as any).eliminarProducto = eliminarProducto;
+
+// ========== VARIABLES GLOBALES PARA BÚSQUEDA ==========
+let productosOriginales: Producto[] = [];
+let pedidosOriginales: Pedido[] = [];
+
+// ========== FUNCIONES DE BÚSQUEDA PARA PRODUCTOS ==========
+async function buscarProducto(): Promise<void> {
+    const searchInput = document.getElementById('searchProductId') as HTMLInputElement;
+    const searchValue = searchInput.value.trim();
+    
+    if (searchValue === '') {
+        await cargarProductos(); // Tu función existente
+        return;
+    }
+    
+    try {
+        // Obtener productos desde el servidor
+        const response: Response = await fetch('http://localhost:3000/productos');
+        const productos: Producto[] = await response.json();
+        
+        // Filtrar productos por ID
+        const filteredProducts = productos.filter(producto => 
+            producto.id.toString().includes(searchValue)
+        );
+        
+        // Mostrar productos filtrados
+        const table = document.getElementById('productosTable') as HTMLTableElement;
+        table.innerHTML = '<tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th><th>Acciones</th></tr>';
+        
+        filteredProducts.forEach((p: Producto) => {
+            const row: HTMLTableRowElement = table.insertRow();
+            row.innerHTML = `
+                <td>${p.id}</td>
+                <td>${p.nombre}</td>
+                <td>${p.precio}</td>
+                <td>${p.stock}</td>
+                <td><button class="delete-btn" onclick="eliminarProducto(${p.id})">Eliminar</button></td>
+            `;
+        });
+        
+    } catch (error) {
+        console.error('Error en búsqueda de productos:', error);
+    }
+}
+
+function clearSearch(): void {
+    const searchInput = document.getElementById('searchProductId') as HTMLInputElement;
+    searchInput.value = '';
+    cargarProductos(); // Recargar todos los productos
+}
+
+// ========== FUNCIONES DE BÚSQUEDA PARA BAJO STOCK ==========
+async function buscarBajoStock(): Promise<void> {
+    const searchInput = document.getElementById('searchBajoStock') as HTMLInputElement;
+    const searchValue = searchInput.value.trim();
+    
+    if (searchValue === '') {
+        await cargarBajoStock(); // Tu función existente
+        return;
+    }
+    
+    try {
+        // Obtener productos con bajo stock desde el servidor
+        const response: Response = await fetch('http://localhost:3000/productos/bajo-stock');
+        const productos: Producto[] = await response.json();
+        
+        // Filtrar productos por ID
+        const filteredProducts = productos.filter(producto => 
+            producto.id.toString().includes(searchValue)
+        );
+        
+        // Mostrar productos filtrados
+        const table = document.getElementById('bajoStockTable') as HTMLTableElement;
+        table.innerHTML = '<tr><th>ID</th><th>Nombre</th><th>Precio</th><th>Stock</th></tr>';
+        
+        filteredProducts.forEach((p: Producto) => {
+            const row: HTMLTableRowElement = table.insertRow();
+            row.innerHTML = `<td>${p.id}</td><td>${p.nombre}</td><td>${p.precio}</td><td>${p.stock}</td>`;
+        });
+        
+    } catch (error) {
+        console.error('Error en búsqueda de bajo stock:', error);
+    }
+}
+
+function clearSearchBajoStock(): void {
+    const searchInput = document.getElementById('searchBajoStock') as HTMLInputElement;
+    searchInput.value = '';
+    cargarBajoStock(); // Recargar todos los productos con bajo stock
+}
+
+// ========== FUNCIONES DE BÚSQUEDA PARA PEDIDOS ==========
+async function buscarPedidos(): Promise<void> {
+    const searchInput = document.getElementById('searchPedidos') as HTMLInputElement;
+    const searchValue = searchInput.value.trim();
+    
+    if (searchValue === '') {
+        await cargarPedidos(); // Tu función existente
+        return;
+    }
+    
+    try {
+        // Obtener pedidos desde el servidor
+        const response: Response = await fetch('http://localhost:3000/pedidos');
+        const pedidos: Pedido[] = await response.json();
+        
+        // Filtrar pedidos por producto_id
+        const filteredPedidos = pedidos.filter(pedido => 
+            pedido.producto_id.toString().includes(searchValue)
+        );
+        
+        // Mostrar pedidos filtrados
+        const table = document.getElementById('pedidosTable') as HTMLTableElement;
+        table.innerHTML = '<tr><th>ID</th><th>Producto ID</th><th>Cantidad</th><th>Fecha</th></tr>';
+        
+        filteredPedidos.forEach((p: Pedido) => {
+            const row: HTMLTableRowElement = table.insertRow();
+            row.innerHTML = `<td>${p.id}</td><td>${p.producto_id}</td><td>${p.cantidad}</td><td>${p.fecha}</td>`;
+        });
+        
+    } catch (error) {
+        console.error('Error en búsqueda de pedidos:', error);
+    }
+}
+
+function clearSearchPedidos(): void {
+    const searchInput = document.getElementById('searchPedidos') as HTMLInputElement;
+    searchInput.value = '';
+    cargarPedidos(); // Recargar todos los pedidos
+}
+
+// ========== EVENT LISTENERS PARA BÚSQUEDA ==========
+function setupSearchListeners(): void {
+    const searchProductId = document.getElementById('searchProductId') as HTMLInputElement;
+    const searchBajoStock = document.getElementById('searchBajoStock') as HTMLInputElement;
+    const searchPedidos = document.getElementById('searchPedidos') as HTMLInputElement;
+
+    searchProductId?.addEventListener('input', buscarProducto);
+    searchBajoStock?.addEventListener('input', buscarBajoStock);
+    searchPedidos?.addEventListener('input', buscarPedidos);
+}
+
+// Hacer funciones globales para los botones HTML
+(window as any).clearSearch = clearSearch;
+(window as any).clearSearchBajoStock = clearSearchBajoStock;
+(window as any).clearSearchPedidos = clearSearchPedidos;
+
+// ========== MODIFICAR LA INICIALIZACIÓN ==========
+// REEMPLAZA estas líneas al final de tu archivo:
+// cargarProductos();
+// cargarBajoStock();
+// cargarPedidos();
+
+// POR ESTAS:
+document.addEventListener('DOMContentLoaded', async () => {
+    await cargarProductos();
+    await cargarBajoStock();
+    await cargarPedidos();
+    setupSearchListeners(); // Configurar los buscadores
+});

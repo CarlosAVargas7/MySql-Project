@@ -13,11 +13,14 @@ form {
     display: flex;
     gap: 10px;
     margin-bottom: 20px;
+    flex-wrap: wrap;
 }
 
 input {
     padding: 8px;
     font-size: 16px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
 }
 
 button {
@@ -26,33 +29,74 @@ button {
     color: white;
     border: none;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 button:hover {
     background-color: #0063cd;
 }
 
+/* Contenedor con scroll vertical */
+.table-container {
+    max-height: 270px; /* Altura máxima visible */
+    overflow-y: auto;
+    overflow-x: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
 table {
     border-collapse: collapse;
     width: 100%;
-    margin-bottom: 20px;
+    min-width: 600px;
 }
 
 th,
 td {
     border: 1px solid #ccc;
-    padding: 8px;
+    padding: 12px 8px;
     text-align: left;
 }
 
 th {
-    background-color: #f2f2f2;
+    background-color: #f8f9fa;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+tbody tr:hover {
+    background-color: #e9ecef;
 }
 
 .delete-btn {
     background-color: #dc3545;
+    padding: 4px 8px;
+    font-size: 12px;
 }
 
 .delete-btn:hover {
     background-color: #b02a37;
+}
+
+/* Estilos responsivos */
+@media (max-width: 768px) {
+    form {
+        flex-direction: column;
+    }
+    
+    input, button {
+        width: 100%;
+    }
+    
+    .table-container {
+        max-height: 200px;
+    }
 }

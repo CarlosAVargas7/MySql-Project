@@ -34,35 +34,66 @@
     </form>
 
     <h2>Productos</h2>
-    <table id="productosTable">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-            <th>Acciones</th>
-        </tr>
-    </table>
-
+    <div class="search-container">
+        <input type="text" id="searchProductId" placeholder="Buscar por ID de producto..." />
+        <button type="button" onclick="clearSearch()">Limpiar</button>
+    </div>
+    <div class="table-container">
+        <table id="productosTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
     <h2>Productos con Bajo Stock</h2>
-    <table id="bajoStockTable">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Precio</th>
-            <th>Stock</th>
-        </tr>
-    </table>
-
+    <div class="search-container">
+        <input type="text" id="searchBajoStock" placeholder="Buscar por ID de producto..." />
+        <button type="button" onclick="clearSearchBajoStock()">Limpiar</button>
+    </div>
+    <div class="table-container">
+        <table id="bajoStockTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Stock</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
     <h2>Pedidos</h2>
-    <table id="pedidosTable">
-        <tr>
-            <th>ID</th>
-            <th>Producto ID</th>
-            <th>Cantidad</th>
-            <th>Fecha</th>
-        </tr>
-    </table>
+    <div class="search-container">
+        <input type="text" id="searchPedidos" placeholder="Buscar por ID de producto..." />
+        <button type="button" onclick="clearSearchPedidos()">Limpiar</button>
+    </div>
+    <div class="table-container">
+        <table id="pedidosTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Producto ID</th>
+                    <th>Cantidad</th>
+                    <th>Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    </div>
+    
 
     <script type="module" src="/src/main.ts"></script>
 
