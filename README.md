@@ -1,64 +1,64 @@
-# Sistema de Gestión de Inventario - Backend con Node.js y Frontend con TypeScript
+# Inventory Management System - Node.js Backend & TypeScript Frontend
 
-![Tecnologías utilizadas](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
+![Technologies Used](https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
 ![MySQL](https://img.shields.io/badge/MySQL-005C84?style=for-the-badge&logo=mysql&logoColor=white)
 
-Un sistema completo de gestión de inventario con backend en Node.js/Express y frontend en TypeScript, que incluye funcionalidades CRUD para productos, gestión de pedidos con transacciones SQL, y visualización de productos con bajo stock.
+A complete inventory management system featuring a Node.js/Express backend and TypeScript frontend, including product CRUD operations, SQL transaction-based order processing, and real-time low stock visualization.
 
-## ✨ Características principales
+## ✨ Key Features
 
-- **Backend robusto**: API REST con Express.js y TypeScript
-- **Frontend moderno**: Interfaz responsive con TypeScript puro (sin frameworks)
-- **Base de datos**: MySQL con pool de conexiones y transacciones
-- **Funcionalidades completas**:
-  - CRUD de productos
-  - Registro de pedidos con transacciones ACID
-  - Alertas de bajo stock
-  - Búsqueda y filtrado en tiempo real
-- **Arquitectura limpia**: Separación clara entre frontend y backend
+- **Robust Backend**: REST API with Express.js and TypeScript
+- **Modern Frontend**: Responsive interface using pure TypeScript (no frameworks)
+- **Database**: MySQL with connection pooling and transactions
+- **Complete Functionality**:
+  - Product CRUD operations
+  - ACID-compliant order processing
+  - Low stock alerts
+  - Real-time search and filtering
+- **Clean Architecture**: Clear separation between frontend and backend
 
-## 🛠️ Stack tecnológico
+## 🛠️ Tech Stack
 
 - **Backend**:
   - Node.js + Express
   - TypeScript
   - MySQL (mysql2/promise)
-  - CORS para comunicación frontend-backend
+  - CORS for frontend-backend communication
 
 - **Frontend**:
-  - TypeScript puro (sin frameworks)
-  - CSS moderno con diseño responsive
-  - Fetch API para comunicación con el backend
+  - Pure TypeScript (no frameworks)
+  - Modern responsive CSS
+  - Fetch API for backend communication
 
-- **Herramientas**:
-  - Vite para el frontend
-  - Docker (compose y Dockerfile)
-  - Git para control de versiones
+- **Tools**:
+  - Vite for frontend
+  - Docker (compose and Dockerfile)
+  - Git for version control
 
-## 🚀 Retos técnicos y aprendizajes
+## 🚀 Technical Challenges & Learnings
 
-### 1. Implementación de transacciones SQL para pedidos
+### 1. Implementing SQL Transactions for Orders
 
-**Reto**: Garantizar la consistencia de datos al registrar pedidos y actualizar el stock simultáneamente.
+**Challenge**: Ensuring data consistency when processing orders and updating stock simultaneously.
 
-**Solución**: Implementé transacciones ACID en MySQL:
+**Solution**: Implemented ACID-compliant MySQL transactions:
 ```typescript
 const connection = await pool.getConnection();
 try {
   await connection.beginTransaction();
   
-  // 1. Insertar pedido
-  await connection.query('INSERT INTO Pedidos...');
+  // 1. Insert order
+  await connection.query('INSERT INTO Orders...');
   
-  // 2. Actualizar stock (con verificación)
+  // 2. Update stock (with validation)
   const [result] = await connection.query(
-    'UPDATE Productos SET stock = stock - ? WHERE id = ? AND stock >= ?',
-    [cantidad, producto_id, cantidad]
+    'UPDATE Products SET stock = stock - ? WHERE id = ? AND stock >= ?',
+    [quantity, product_id, quantity]
   );
   
   if (result.affectedRows === 0) {
-    throw new Error('Stock insuficiente');
+    throw new Error('Insufficient stock');
   }
   
   await connection.commit();
@@ -70,103 +70,103 @@ try {
 }
 ```
 
-**Aprendizaje**: Entendí profundamente cómo las transacciones garantizan la integridad de los datos en operaciones críticas.
+**Learning**: Gained deep understanding of how transactions ensure data integrity in critical operations.
 
-### 2. Comunicación frontend-backend con TypeScript
+### 2. Frontend-Backend Communication with TypeScript
 
-**Reto**: Mantener tipado seguro entre el frontend TypeScript y la API REST.
+**Challenge**: Maintaining type safety between TypeScript frontend and REST API.
 
-**Solución**: Creé interfaces compartidas y validación estricta:
+**Solution**: Created shared interfaces and strict validation:
 ```typescript
-interface Producto {
+interface Product {
   id: number;
-  nombre: string;
-  precio: number;
+  name: string;
+  price: number;
   stock: number;
 }
 
-// En las llamadas API
-async function cargarProductos(): Promise<Producto[]> {
-  const response = await fetch('/productos');
-  return await response.json() as Producto[];
+// API calls
+async function loadProducts(): Promise<Product[]> {
+  const response = await fetch('/products');
+  return await response.json() as Product[];
 }
 ```
 
-**Aprendizaje**: TypeScript mejora significativamente la mantenibilidad al reducir errores en tiempo de compilación.
+**Learning**: TypeScript significantly improves maintainability by catching errors at compile time.
 
-### 3. Performance con grandes volúmenes de datos
+### 3. Performance with Large Data Volumes
 
-**Reto**: Insertar 10,000 pedidos de prueba sin bloquear la aplicación.
+**Challenge**: Inserting 10,000 test orders without blocking the application.
 
-**Solución**: Implementé procesamiento por lotes con feedback visual:
+**Solution**: Implemented batch processing with visual feedback:
 ```javascript
 for (let i = 1; i <= 10000; i++) {
-  // Procesar pedido...
+  // Process order...
   
   if (i % 1000 === 0) {
-    console.log(`✅ Insertados ${i} pedidos...`);
+    console.log(`✅ ${i} orders inserted...`);
   }
 }
 ```
 
-**Aprendizaje**: La importancia de manejar operaciones masivas de forma asíncrona y proporcionar feedback al usuario.
+**Learning**: The importance of handling bulk operations asynchronously and providing user feedback.
 
-## 📦 Estructura del proyecto
+## 📦 Project Structure
 
 ```
-MySql/                 # Scripts de base de datos
+MySql/                 
 backend/
 ├── node_modules/
-├── app.ts             # Servidor principal
+├── app.ts             # Main server
 ├── package.json
 frontend/
 ├── node_modules/
 ├── src/
-│   ├── main.ts        # Lógica principal del frontend
-│   ├── index.html     # Estructura HTML
-│   ├── styles.css     # Estilos CSS
+│   ├── main.ts        # Frontend logic
+│   ├── index.html     # HTML structure
+│   ├── styles.css     # CSS styles
 ├── package.json
 .gitignore
-docker-compose.yml     # Configuración para Docker
-Dockerfile             # Configuración para el contenedor
-tsconfig.json          # Configuración de TypeScript
+docker-compose.yml     # Docker configuration
+Dockerfile             # Container setup
+tsconfig.json          # TypeScript configuration
 ```
 
-## 🏃 Cómo ejecutar el proyecto
+## � How to Run the Project
 
-1. **Requisitos**:
-   - Docker y Docker Compose instalados
+1. **Requirements**:
+   - Docker and Docker Compose installed
    - Node.js v16+
 
-2. **Iniciar servicios**:
+2. **Start services**:
 ```bash
 docker-compose up -d
 ```
 
-3. **Instalar dependencias**:
+3. **Install dependencies**:
 ```bash
 cd backend && npm install
 cd ../frontend && npm install
 ```
 
-4. **Ejecutar**:
+4. **Run**:
 ```bash
 # Backend
 cd backend && npm start
 
-# Frontend (en otra terminal)
+# Frontend (in another terminal)
 cd frontend && npm run dev
 ```
 
-## 🤔 ¿Por qué este proyecto destaca en mi portfolio?
+## 🤔 Why This Project Stands Out in My Portfolio
 
-Este proyecto demuestra mi capacidad para:
-- Implementar soluciones full-stack completas
-- Manejar problemas complejos de integridad de datos
-- Escribir código limpio y mantenible con TypeScript
-- Diseñar arquitecturas escalables
-- Aprender y aplicar nuevos conceptos rápidamente
+This project demonstrates my ability to:
+- Implement complete full-stack solutions
+- Handle complex data integrity problems
+- Write clean, maintainable TypeScript code
+- Design scalable architectures
+- Quickly learn and apply new concepts
 
 ---
 
-💡 **Nota para reclutadores**: Este proyecto fue desarrollado como parte de mi exploración personal de tecnologías backend y frontend. Cada reto superado representó una valiosa oportunidad de aprendizaje que ahora aplico en mis desarrollos profesionales. ¡Estoy emocionado por llevar estas habilidades a nuevos desafíos!
+💡 **Note to Recruiters**: This project was developed as part of my personal exploration of backend and frontend technologies. Each challenge overcome represented valuable learning that I now apply in professional development. I'm excited to bring these skills to new challenges!
