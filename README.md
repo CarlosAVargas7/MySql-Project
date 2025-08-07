@@ -172,4 +172,4 @@ This project demonstrates my ability to:
 
 ---
 
-💡 **Note to Recruiters**: This project was developed as part of my personal exploration of backend and frontend technologies. Each challenge overcome represented valuable learning that I now apply in professional development. I'm excited to bring these skills to new challenges!
+💡 **Note to Recruiters**: This project was developed as part of my personal exploration of backend and frontend technologies. Each challenge overcome represented valuable learning that I now apply in professional development. I'm excited to bring these skills to new challenges
