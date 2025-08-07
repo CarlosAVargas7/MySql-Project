@@ -42,23 +42,24 @@ A complete inventory management system featuring a Node.js/Express backend and T
 
 **Challenge**: Ensuring data consistency when processing orders and updating stock simultaneously.
 
-**Solution**: Implemented ACID-compliant MySQL transactions:
+**Solution**: Implemented ACID-compliant MySQL transactions (original Spanish code preserved):
+
 ```typescript
 const connection = await pool.getConnection();
 try {
   await connection.beginTransaction();
   
-  // 1. Insert order
-  await connection.query('INSERT INTO Orders...');
+  // 1. Insertar pedido
+  await connection.query('INSERT INTO Pedidos...');
   
-  // 2. Update stock (with validation)
+  // 2. Actualizar stock (con verificación)
   const [result] = await connection.query(
-    'UPDATE Products SET stock = stock - ? WHERE id = ? AND stock >= ?',
-    [quantity, product_id, quantity]
+    'UPDATE Productos SET stock = stock - ? WHERE id = ? AND stock >= ?',
+    [cantidad, producto_id, cantidad]
   );
   
   if (result.affectedRows === 0) {
-    throw new Error('Insufficient stock');
+    throw new Error('Stock insuficiente');
   }
   
   await connection.commit();
@@ -76,19 +77,20 @@ try {
 
 **Challenge**: Maintaining type safety between TypeScript frontend and REST API.
 
-**Solution**: Created shared interfaces and strict validation:
+**Solution**: Created shared interfaces (original Spanish names preserved):
+
 ```typescript
-interface Product {
+interface Producto {
   id: number;
-  name: string;
-  price: number;
+  nombre: string;
+  precio: number;
   stock: number;
 }
 
-// API calls
-async function loadProducts(): Promise<Product[]> {
-  const response = await fetch('/products');
-  return await response.json() as Product[];
+// En las llamadas API
+async function cargarProductos(): Promise<Producto[]> {
+  const response = await fetch('/productos');
+  return await response.json() as Producto[];
 }
 ```
 
@@ -98,13 +100,14 @@ async function loadProducts(): Promise<Product[]> {
 
 **Challenge**: Inserting 10,000 test orders without blocking the application.
 
-**Solution**: Implemented batch processing with visual feedback:
+**Solution**: Implemented batch processing with visual feedback (original Spanish logs):
+
 ```javascript
 for (let i = 1; i <= 10000; i++) {
-  // Process order...
+  // Procesar pedido...
   
   if (i % 1000 === 0) {
-    console.log(`✅ ${i} orders inserted...`);
+    console.log(`✅ Insertados ${i} pedidos...`);
   }
 }
 ```
@@ -132,7 +135,7 @@ Dockerfile             # Container setup
 tsconfig.json          # TypeScript configuration
 ```
 
-## � How to Run the Project
+## 🏃 How to Run the Project
 
 1. **Requirements**:
    - Docker and Docker Compose installed
